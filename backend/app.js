@@ -3,6 +3,7 @@ import pizzaRoutes from "./src/routes/pizza.js"
 import branchesRoutes from "./src/routes/branches.js"
 import employeesRoutes from "./src/routes/employees.js"
 import reviewRoutes from "./src/routes/reviews.js"
+import customerRoutes from "./src/routes/customers.js"
 
 //Creo la constante para utilizar la libreria de express en todos lados
 const app = express();
@@ -14,5 +15,7 @@ app.use("/api/pizzas", pizzaRoutes);
 app.use("/api/branches", branchesRoutes)
 app.use("/api/employee", employeesRoutes)
 app.use("/api/reviews", reviewRoutes)
+app.use("/api/customers", customerRoutes)
+app.use("/api/registerCustomer")
 
 export default app;
