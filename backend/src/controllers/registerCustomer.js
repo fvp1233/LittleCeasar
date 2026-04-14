@@ -75,7 +75,7 @@ registerCustomerController.register = async (req, res) => {
       service: "gmail",
       auth: {
         user: config.email.user_email,
-        password: config.email.password_email,
+        pass: config.email.password_email,
       },
     });
 
@@ -93,7 +93,7 @@ registerCustomerController.register = async (req, res) => {
     //#3 Enviar el correo electronico
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log("error");
+        console.log("error" + error);
         return res.status(500).json({ message: "Error sending email" });
       }
       return res.status(200).json({ message: "Email sent" });
