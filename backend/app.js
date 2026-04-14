@@ -6,6 +6,9 @@ import reviewRoutes from "./src/routes/reviews.js"
 import customerRoutes from "./src/routes/customers.js"
 import registerCustomers from "./src/routes/registerCostumers.js"
 import cookieParser from "cookie-parser"
+import registerEmployee from "./src/routes/registerEmployee.js"
+import adminRoutes from "./src/routes/admins.js"
+import registerAdmins from "./src/routes/registerAdmin.js"
 
 //Creo la constante para utilizar la libreria de express en todos lados
 const app = express();
@@ -23,5 +26,8 @@ app.use("/api/reviews", reviewRoutes)
 app.use("/api/customers", customerRoutes)
 app.use("/api/registerCustomer", registerCustomers)
 //Intalar la liberia npm cookie-parse para el registro ya que usa cookies
+app.use("/api/registerEmployee",registerEmployee)
+app.use("/api/admins", adminRoutes)
+app.use("/api/registerAdmin", registerAdmins)
 
 export default app;
