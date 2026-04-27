@@ -12,6 +12,7 @@ import registerAdmins from "./src/routes/registerAdmin.js"
 import loginCustomersRoutes from "./src/routes/loginCustomer.js"
 import logoutRoutes from "./src/routes/logout.js"
 import cors from 'cors'
+import recoveryPasswordRoutes from "./src/routes/recoveryPassord.js"
 
 //Creo la constante para utilizar la libreria de express en todos lados
 const app = express();
@@ -40,5 +41,6 @@ app.use("/api/admins", adminRoutes)
 app.use("/api/registerAdmin", registerAdmins)
 app.use("/api/loginCustomers",loginCustomersRoutes )
 app.use("/api/logout",logoutRoutes )
+app.use("/api/recoveryPassword", recoveryPasswordRoutes)
 
 export default app;
