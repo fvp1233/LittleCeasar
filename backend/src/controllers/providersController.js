@@ -46,26 +46,41 @@ providerController.updateProvider = async (req, res) => {
     const updatedData = { name, phone };
 
     //Si veiene alguna imagen
-    if(req.file){
-        //Eliminar la imagen anterior
-        await cloudinary.uploader.destroy(providerFound.public_id)
-        
-        //Guardo la nueva 
-        updatedData.image = req.file.path
-        updatedData.public_id = req.file.filename
+    if (req.file) {
+      //Eliminar la imagen anterior
+      await cloudinary.uploader.destroy(providerFound.public_id);
+
+      //Guardo la nueva
+      updatedData.image = req.file.path;
+      updatedData.public_id = req.file.filename;
     }
 
     //Actualizamos los valores en la base de datos
-    await providerModel.findByIdAndUpdate(
-        req.params.id,
-        updatedData,
-        {new: true}
-    )
+    await providerModel.findByIdAndUpdate(req.params.id, updatedData, {
+      new: true,
+    });
 
-    return res.status(200).json({message: "Provider updated"})
-
+    return res.status(200).json({ message: "Provider updated" });
   } catch (error) {
-    console.log("error" + error)
-    return res.status(500).json({message: "Internal server errpor"})
+    console.log("error" + error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+//
+providerController.deleteProvider = async (req, res) => {
+  try {
+    const providerFound = await providerModel.findById(req.params.id);
+
+    //Elimino la imagen de cloudinary
+    await cloudinary.uploader.destroy(providerFound.public_id);
+
+    await providerModel.findByIdAndDelete(req.params.id);
+
+    return res.status(200).json({ message: "Provider deleted" });
+  } catch (error) {
+    console.log("error" + error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+export default providerController;
