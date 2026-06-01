@@ -15,6 +15,8 @@ import cors from 'cors'
 import recoveryPasswordRoutes from "./src/routes/recoveryPassord.js"
 import providersRoute from "./src/routes/providers.js"
 import cartRoutes from "./src/routes/cart.js"
+import wompiRoutes from "./src/routes/wompi.js"
+import deliveriesRoutes from "./src/routes/deliveries.js"
 
 //Creo la constante para utilizar la libreria de express en todos lados
 const app = express();
@@ -45,6 +47,8 @@ app.use("/api/loginCustomers",loginCustomersRoutes )
 app.use("/api/logout",logoutRoutes )
 app.use("/api/recoveryPassword", recoveryPasswordRoutes)
 app.use("/api/provider", providersRoute)
+app.use("/api/wompi", wompiRoutes)
+app.use("/api/deliveries", deliveriesRoutes)
 
 app.use("/api/cart", cartRoutes)
 
