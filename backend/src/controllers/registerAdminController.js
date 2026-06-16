@@ -4,17 +4,24 @@ import jsonwebtoken from "jsonwebtoken"; //token
 import bcryptjs from "bcryptjs"; //Encriptador
 import adminModel from "../models/admins.js";
 import { config } from "../../config.js";
-import { register } from "module";
-import { decode } from "punycode";
 
 //array de funciones
 const registerAdminController = {};
 
 registerAdminController.register = async (req, res) => {
   try {
-    const { name, lastName, email, password, isVerified } = req.body;
+    //#1 solicitar los datos a guardar
+    const {
+      name,
+      lastName,
+      email,
+      password,
+      isVerified,
+      loginAttemps,
+      timeOut,
+    } = req.body;
 
-    //#2 validar si el correo existe en la base de datos
+    //#2 Validar si el correo existe en la base de datos
     const existsAdmin = await adminModel.findOne({ email });
     if (existsAdmin) {
       return res.status(400).json({ message: "Admin already exists" });
@@ -26,19 +33,22 @@ registerAdminController.register = async (req, res) => {
     //Generar un codigo aleatorio
     const randomCode = crypto.randomBytes(3).toString("hex");
 
+    //Guardamos todo en un token
     const token = jsonwebtoken.sign(
-      //#1 que vamos a guardar
+      //#1 ¿Qué vamos a guardar?
       {
         randomCode,
         name,
         lastName,
         email,
-        password,
+        password: passwordHashed,
         isVerified,
+        loginAttemps,
+        timeOut,
       },
-      //#2 secret key
+      //#2 Secret key que va en el .env
       config.JWT.secret,
-      //#3 cuando expira mi token?
+      //#3 ¿Cuándo expira mi token?
       { expiresIn: "15m" },
     );
 
@@ -98,10 +108,12 @@ registerAdminController.verifyCode = async (req, res) => {
       email,
       password,
       isVerified,
+      loginAttemps,
+      timeOut,
     } = decoded;
 
-    if (verificationCodeRequest !== storedCode) {
-      return res.status(400).json({ message: "Invalid code" });
+    if(verificationCodeRequest !== storedCode){
+      return res.status(400).json({message: "Invalid code"})
     }
 
     //Si todo esta bien, y el usuario lo registramos en la bd
@@ -114,11 +126,13 @@ registerAdminController.verifyCode = async (req, res) => {
     });
     await newAdmin.save();
 
-    res.clearCookie("registrationCookie");
-    return res.status(200).json({ message: "Admin registered" });
+    res.clearCookie("registrationCookie")
+    return res.status(200).json({message: "Admin registered"})
+
   } catch (error) {
-    console.log("error" + error);
-    return res.status(500).json({ message: "Internal server error" });
+    console.log("error" + error)
+    return res.status(500).json({message: "Internal server error"})
   }
 };
+
 export default registerAdminController;

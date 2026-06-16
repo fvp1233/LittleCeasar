@@ -7,25 +7,33 @@ password
 isVerified
 */
 
-const adminSchema = new Schema ({
+const adminSchema = new Schema(
+  {
     name: {
-        type: String
+      type: String,
     },
     lastName: {
-        type: String
+      type: String,
     },
     email: {
-        type: String
+      type: String,
     },
     password: {
-        type: String
+      type: String,
     },
-    isVerified:{
-        type: Boolean
-    }
-},
-{
-     timestamps: true,
-    strict: false
-})
+    isVerified: {
+      type: Boolean,
+    },
+    loginAttemps: {
+      type: Number,
+    },
+    timeOut: {
+      type: Date,
+    },
+  },
+  {
+    timestamps: true,
+    strict: false,
+  },
+);
 export default model("admins", adminSchema);
